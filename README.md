@@ -3,6 +3,8 @@
 
 ## Introduction
 
+In this lab you'll practice your clustering and visualization skills to investigate stackoverflow! Specifically, the dataset you'll ve investigating examines tags on stackoverflow. With this, you should be able to explore some of the related technologies currently in use by developers.
+
 ## Objectives
 You will be able to:
 

@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this lab you'll practice your clustering and visualization skills to investigate stackoverflow! Specifically, the dataset you'll ve investigating examines tags on stackoverflow. With this, you should be able to explore some of the related technologies currently in use by developers.
+In this lab you'll practice your clustering and visualization skills to investigate stackoverflow! Specifically, the dataset you'll be investigating examines tags on stackoverflow. With this, you should be able to explore some of the related technologies currently in use by developers.
 
 ## Objectives
 You will be able to:
@@ -59,7 +59,7 @@ Begin to explore the impact of using different values of k.
 
 ## Perform an Alternative Clustering Using the Girvan-Newman Algorithm
 
-Recluster the network using the Girvan-Newman algorithm. Remember that this will give you a list of cluster lists corresponding to the clusters that form from removing the top n edges according to some metric, typically edge betweeness.
+Recluster the network using the Girvan-Newman algorithm. Remember that this will give you a list of cluster lists corresponding to the clusters that form from removing the top n edges according to some metric, typically edge betweenness.
 
 
 ```python

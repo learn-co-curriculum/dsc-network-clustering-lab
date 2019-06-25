@@ -194,7 +194,7 @@ for n, ci in enumerate(kc_clusters):
 
 ## Perform an Alternative Clustering Using the Girvan-Newman Algorithm
 
-Recluster the network using the Girvan-Newman algorithm. Remember that this will give you a list of cluster lists corresponding to the clusters that form from removing the top n edges according to some metric, typically edge betweeness.
+Recluster the network using the Girvan-Newman algorithm. Remember that this will give you a list of cluster lists corresponding to the clusters that form from removing the top n edges according to some metric, typically edge betweenness.
 
 
 ```python

@@ -3,22 +3,20 @@
 
 ## Introduction
 
-In this lab you'll practice your clustering and visualization skills to investigate stackoverflow! Specifically, the dataset you'll ve investigating examines tags on stackoverflow. With this, you should be able to explore some of the related technologies currently in use by developers.
+In this lab you'll practice your clustering and visualization skills to investigate stackoverflow! Specifically, the dataset you'll be investigating examines tags on stackoverflow. With this, you should be able to explore some of the related technologies currently in use by developers.
 
 ## Objectives
-You will be able to:
 
-* Implement network clustering with k-clique clustering
-* Implement network clustering with the Girvan-Newman algorithm
-* Visualize clusters
+In this lab you will: 
+
+- Make visualizations of clusters and gain insights about how the clusters have formed
 
 ## Load the Dataset
 
-Load the dataset from the `stack-overflow-tag-network/stack_network_links.csv` file. For now, simply load the file as a standard pandas DataFrame.
+Load the data from the `'stack-overflow-tag-network/stack_network_links.csv'` file. For now, simply load the file as a standard pandas DataFrame.
 
 
 ```python
-#Your code here
 import pandas as pd
 df = pd.read_csv('stack-overflow-tag-network/stack_network_links.csv')
 df.head()
@@ -93,7 +91,6 @@ Transform the dataset from a Pandas DataFrame into a NetworkX graph.
 
 
 ```python
-#Your code here
 import networkx as nx
 
 G = nx.Graph()
@@ -114,17 +111,21 @@ Next, create an initial visualization of the network.
 
 
 ```python
-#Your code here
 import matplotlib.pyplot as plt
 %matplotlib inline
 
 plt.figure(figsize=(35,20))
 nx.draw(G, pos=nx.spring_layout(G, k=2, seed=10), with_labels=True,
-        alpha=.8, node_size=20000, font_weight="bold", font_size=18)
+        alpha=.8, node_size=20000, font_weight='bold', font_size=18)
 ```
 
+    //anaconda3/lib/python3.7/site-packages/networkx/drawing/nx_pylab.py:579: MatplotlibDeprecationWarning: 
+    The iterable function was deprecated in Matplotlib 3.1 and will be removed in 3.3. Use np.iterable instead.
+      if not cb.iterable(width):
 
-![png](index_files/index_6_0.png)
+
+
+![png](index_files/index_6_1.png)
 
 
 ## Perform an Initial Clustering using k-clique Clustering
@@ -133,10 +134,9 @@ Begin to explore the impact of using different values of k.
 
 
 ```python
-#Your code here
 for i in range(2,6):
     kc_clusters = list(nx.algorithms.community.k_clique_communities(G, k=i))
-    print("With k={}, {} clusters form.".format(i, len(kc_clusters)))
+    print('With k={}, {} clusters form.'.format(i, len(kc_clusters)))
 ```
 
     With k=2, 6 clusters form.
@@ -145,63 +145,57 @@ for i in range(2,6):
     With k=5, 5 clusters form.
 
 
-
-```python
-kc_clusters = list(nx.algorithms.community.k_clique_communities(G, k=2))
-```
-
 ## Visualize The Clusters Produced from the K-Clique Algorithm
 
 > **Level-Up:** Experiment with different `nx.draw()` settings. See the [draw documentation here](https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.drawing.nx_pylab.draw_networkx.html) for a full list. Some recommended settings that you've previewed include the position parameter `pos`, `with_labels=True`, `node_color`, `alpha`, `node_size`, `font_weight` and `font_size`. Note that `nx.spring_layout(G)` is particularly useful for laying out a well formed network. With this, you can pass in parameters for the relative edge distance via `k` and set a `random_seed` to have reproducible results as in `nx.spring_layout(G, k=2.66, seed=10)`. For more details, see the [spring_layout documentation here](https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.drawing.layout.spring_layout.html?highlight=spring%20layout#networkx.drawing.layout.spring_layout).
 
 
 ```python
-colors = [("teal","#1cf0c7"),
-         ("workzone_yellow","#ffd43d"),
-         ("light-blue","#00b3e6"),
-         ("medium-blue","#32cefe"),
-         ("gray","#efefef"),
-         ("dark-blue", "#1443ff")]
+colors = [('teal', '#1cf0c7'),
+         ('workzone_yellow', '#ffd43d'),
+         ('light-blue', '#00b3e6'),
+         ('medium-blue', '#32cefe'),
+         ('gray', '#efefef'),
+         ('dark-blue', '#1443ff')]
 color_dict = dict(colors)
 
 fig = plt.figure(figsize=(35,20))
 for n, ci in enumerate(kc_clusters):
     ci = G.subgraph(ci)
     nx.draw(ci, pos=nx.spring_layout(G, k=2, seed=10), with_labels=True, node_color=colors[n%len(colors)][1],
-            alpha=.8, node_size=20000, font_weight="bold", font_size=18)
+            alpha=0.8, node_size=20000, font_weight='bold', font_size=18)
+```
+
+
+![png](index_files/index_10_0.png)
+
+
+
+```python
+kc_clusters = list(nx.algorithms.community.k_clique_communities(G, k=3))
+colors = ['#1cf0c7','#ffd43d','#00b3e6','#32cefe','#efefef','#2b2b2b', '#1443ff',
+          '#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c',
+          '#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928']
+fig = plt.figure(figsize=(35,20))
+for n, ci in enumerate(kc_clusters):
+    ci = G.subgraph(ci)
+    nx.draw(ci, pos=nx.spring_layout(G, k=2.5, seed=10), with_labels=True, node_color=colors[n],
+            alpha=0.8, node_size=20000, font_weight='bold', font_size=18)
 ```
 
 
 ![png](index_files/index_11_0.png)
 
 
-
-```python
-kc_clusters = list(nx.algorithms.community.k_clique_communities(G, k=3))
-colors = ["#1cf0c7","#ffd43d","#00b3e6","#32cefe","#efefef","#2b2b2b", "#1443ff",
-          "#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c",
-          "#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"]
-fig = plt.figure(figsize=(35,20))
-for n, ci in enumerate(kc_clusters):
-    ci = G.subgraph(ci)
-    nx.draw(ci, pos=nx.spring_layout(G, k=2.5, seed=10), with_labels=True, node_color=colors[n],
-            alpha=.8, node_size=20000, font_weight="bold", font_size=18)
-```
-
-
-![png](index_files/index_12_0.png)
-
-
 ## Perform an Alternative Clustering Using the Girvan-Newman Algorithm
 
-Recluster the network using the Girvan-Newman algorithm. Remember that this will give you a list of cluster lists corresponding to the clusters that form from removing the top n edges according to some metric, typically edge betweenness.
+Recluster the network using the Girvan-Newman algorithm. Remember that this will give you a list of cluster lists corresponding to the clusters that from removing the top $n$ edges according to some metric, typically edge betweenness.
 
 
 ```python
-#Your code here
 gn_clusters = list(nx.algorithms.community.centrality.girvan_newman(G))
 for n, clusters in enumerate(gn_clusters):
-    print("After removing {} edges, there are {} clusters.".format(n, len(clusters)))
+    print('After removing {} edges, there are {} clusters.'.format(n, len(clusters))) 
 ```
 
     After removing 0 edges, there are 7 clusters.
@@ -317,27 +311,26 @@ for n, clusters in enumerate(gn_clusters):
 
 ## Create a Visualization Wrapper
 
-Now that you have an idea of how splintered the network becomes based on the number of edges removed, you'll want to examine some of the subsequent groups that gradually break apart. Since the network is quiet complex to start with, using subplots is not a great option; each subplot would be too small to accurately read. Create a visualization function `plot_girvan_newman(G,clusters)` which takes a NetworkX graph object as well as one of the clusters from the output of the Girvan-Newman algorithm above and plots the network with a unique color for each cluster.
+Now that you have an idea of how splintered the network becomes based on the number of edges removed, you'll want to examine some of the subsequent groups that gradually break apart. Since the network is quiet complex to start with, using subplots is not a great option; each subplot would be too small to accurately read. Create a visualization function `plot_girvan_newman(G, clusters)` which takes a NetworkX graph object as well as one of the clusters from the output of the Girvan-Newman algorithm above and plots the network with a unique color for each cluster.
 
 > **Level-Up:** Experiment with different `nx.draw()` settings. See the [draw documentation here](https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.drawing.nx_pylab.draw_networkx.html) for a full list. Some recommended settings that you've previewed include the position parameter `pos`, `with_labels=True`, `node_color`, `alpha`, `node_size`, `font_weight` and `font_size`. Note that `nx.spring_layout(G)` is particularly useful for laying out a well formed network. With this, you can pass in parameters for the relative edge distance via `k` and set a `random_seed` to have reproducible results as in `nx.spring_layout(G, k=2.66, seed=10)`. For more details, see the [spring_layout documentation here](https://networkx.github.io/documentation/networkx-1.10/reference/generated/networkx.drawing.layout.spring_layout.html?highlight=spring%20layout#networkx.drawing.layout.spring_layout).
 
 
 ```python
 def plot_girvan_newman(G, clusters):
-    #Your code here
     fig = plt.figure(figsize=(35,20))
-    colors = ["#1cf0c7","#ffd43d","#00b3e6","#32cefe","#efefef",
-          "#1443ff","#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99",
-          "#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99",
-          "#b15928","#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3",
-          "#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5",
-          "#ffed6f","#bf812d","#dfc27d","#f6e8c3","#f5f5f5","#c7eae5",
-          "#80cdc1", "#35978f", "#01665e", "#003c30"]
+    colors = ['#1cf0c7','#ffd43d','#00b3e6','#32cefe','#efefef',
+          '#1443ff','#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99',
+          '#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99',
+          '#b15928','#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3',
+          '#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5',
+          '#ffed6f','#bf812d','#dfc27d','#f6e8c3','#f5f5f5','#c7eae5',
+          '#80cdc1', '#35978f', '#01665e', '#003c30']
     for n , c in enumerate(clusters):
         ci = G.subgraph(c)
-        #Other recommend random_seed choices are 3,7, 10, K value of 2.5 also seem to work well
+        # Other recommend random_seed choices are 3,7, 10, K value of 2.5 also seem to work well
         nx.draw(ci, pos=nx.spring_layout(G, k=2.66, seed=10), with_labels=True, node_color=colors[n],
-                alpha=.8, node_size=20000, font_weight="bold", font_size=20)
+                alpha=0.8, node_size=20000, font_weight='bold', font_size=20)
     plt.show()
 ```
 
@@ -351,7 +344,7 @@ plot_girvan_newman(G, gn_clusters[5])
 ```
 
 
-![png](index_files/index_18_0.png)
+![png](index_files/index_17_0.png)
 
 
 
@@ -360,7 +353,7 @@ plot_girvan_newman(G, gn_clusters[15])
 ```
 
 
-![png](index_files/index_19_0.png)
+![png](index_files/index_18_0.png)
 
 
 
@@ -369,7 +362,7 @@ plot_girvan_newman(G, gn_clusters[24])
 ```
 
 
-![png](index_files/index_20_0.png)
+![png](index_files/index_19_0.png)
 
 
 ## Cluster Decay Rate
@@ -380,33 +373,26 @@ Create a visual to help yourself understand the rate at which clusters of this n
 
 
 ```python
-#Your code here
 import seaborn as sns
 sns.set_style('darkgrid')
 
 y = [len(cluster) for cluster in gn_clusters]
 x = [n+1 for n in range(len(gn_clusters))]
-plt.plot(x,y, color="#00b3e6")
+plt.plot(x,y, color='#00b3e6')
 plt.title('Number of Clusters versus Number of Edges Removed')
 plt.ylabel('Number of Clusters')
 plt.xlabel('Number of Edges Removed')
+plt.show()
 ```
 
 
-
-
-    Text(0.5, 0, 'Number of Edges Removed')
-
-
-
-
-![png](index_files/index_22_1.png)
+![png](index_files/index_21_0.png)
 
 
 
 ```python
-#While an initial investigation such as the one above does not appear to be particularly informative,
-#exploring additional cluster metrics reveals more interesting patterns.
+# While an initial investigation such as the one above does not appear to be particularly informative,
+# exploring additional cluster metrics reveals more interesting patterns.
 import numpy as np
 
 fig = plt.figure(figsize=(12,10))
@@ -439,7 +425,7 @@ plt.show()
 ```
 
 
-![png](index_files/index_23_0.png)
+![png](index_files/index_22_0.png)
 
 
 ## Choose a Clustering 
@@ -448,27 +434,32 @@ Now that you have generated various clusters within the overall network, which d
 
 
 ```python
-print("Number of clusters:",len(gn_clusters[20]))
+print('Number of clusters:',len(gn_clusters[20]))
 plot_girvan_newman(G, gn_clusters[20])
-#This clustering representation was chosen after analyzing the plots above.
-#After the 20th edge is removed, max cluster size does not drastically drop again,
-#while small and single node clusters start to rapidly spawn. K-Clique clusters did not appear to be well developed.
+# This clustering representation was chosen after analyzing the plots above.
+# After the 20th edge is removed, max cluster size does not drastically drop again,
+# while small and single node clusters start to rapidly spawn. K-Clique clusters did not appear to be well developed.
 ```
 
     Number of clusters: 27
 
 
+    //anaconda3/lib/python3.7/site-packages/networkx/drawing/nx_pylab.py:579: MatplotlibDeprecationWarning: 
+    The iterable function was deprecated in Matplotlib 3.1 and will be removed in 3.3. Use np.iterable instead.
+      if not cb.iterable(width):
 
-![png](index_files/index_25_1.png)
+
+
+![png](index_files/index_24_2.png)
 
 
 
 ```python
-#While there is no definitive criteria for optimizing clusters, 
-#there is almost a 33% increase in the total number clusters here,
-#yet the same definitive clusters jump to the eye as above.
-#For this reason, it can be argued that the above clusters are more definitive and representative.
-print("Number of clusters:",len(gn_clusters[32]))
+# While there is no definitive criteria for optimizing clusters, 
+# there is almost a 33% increase in the total number clusters here,
+# yet the same definitive clusters jump to the eye as above.
+# For this reason, it can be argued that the above clusters are more definitive and representative.
+print('Number of clusters:',len(gn_clusters[32]))
 plot_girvan_newman(G, gn_clusters[32])
 ```
 
@@ -476,7 +467,7 @@ plot_girvan_newman(G, gn_clusters[32])
 
 
 
-![png](index_files/index_26_1.png)
+![png](index_files/index_25_1.png)
 
 
 ## Summary
